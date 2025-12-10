@@ -1,0 +1,30 @@
+name: 运行Python脚本  # 自定义工作流名称
+on:
+  push:  # 触发条件：代码推送时运行
+    branches: [main]  # 目标分支（可修改）
+  workflow_dispatch:  # 允许手动触发（方便测试）
+jobs:
+  run-script:
+    runs-on: ubuntu-latest  # 运行环境（可选windows-latest/macos-latest）
+    steps:
+      - name: 拉取仓库代码
+        uses: actions/checkout@v4  # 检出仓库代码
+      - name: 配置Python环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'  # 指定与脚本兼容的Python版本
+          cache: 'pip'  # 可选：缓存依赖加速安装
+      - name: 安装依赖库
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # 安装依赖
+      - name: 执行Python脚本
+        run: python app.py  # 替换为你的脚本文件名
+      # 执行脚本步骤后添加
+      - name: 上传爬虫结果
+        uses: actions/upload-artifact@v4
+        with:
+          name: crawl-results  # 工件名称（自定义）
+          path: ./output/      # 要上传的目录/文件，支持通配符如./output/*.csv
+          retention-days: 14   # 保留天数1-90，默认30天
+          if-no-files-found: warn  # 无文件时仅警告不失败
