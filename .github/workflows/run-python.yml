@@ -1,7 +1,7 @@
 name: 运行Python脚本  # 自定义工作流名称
 on:
   push:  # 触发条件：代码推送时运行
-    branches: [main]  # 目标分支（可修改）
+    branches: [master]  # 目标分支（可修改）
   workflow_dispatch:  # 允许手动触发（方便测试）
 jobs:
   run-script:
@@ -26,5 +26,5 @@ jobs:
         with:
           name: crawl-results  # 工件名称（自定义）
           path: ./out/      # 要上传的目录/文件，支持通配符如./out/*.csv
-          retention-days: 14   # 保留天数1-90，默认30天
+          retention-days: 90   # 保留天数1-90，默认30天
           if-no-files-found: warn  # 无文件时仅警告不失败

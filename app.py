@@ -666,7 +666,7 @@ def window_main():
 def git_action_main():
     #github_action测试
     comic = "haizeiwang"
-    download_comic_image(372,372,comic)
+    download_comic_image(1,1,comic)
 
 
 if __name__ == "__main__":
