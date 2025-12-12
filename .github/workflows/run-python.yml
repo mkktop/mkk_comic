@@ -8,10 +8,6 @@ on:
 jobs:
   run-script:
     runs-on: ubuntu-latest  # 运行环境（可选windows-latest/macos-latest）
-    env:
-      EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
-      EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-      TARGET_EMAIL: ${{ secrets.TARGET_EMAIL }}
     permissions:
       contents: write  # 允许提交代码到仓库
     steps:
@@ -38,7 +34,7 @@ jobs:
           if-no-files-found: warn  # 无文件时仅警告不失败
       # 分卷打包
       - name: 分卷打包漫画文件
-        if: env.EMAIL_USERNAME == '' || env.EMAIL_PASSWORD == '' || env.TARGET_EMAIL == ''
+        if: ${{ secrets.EMAIL_USERNAME }} != '' && ${{ secrets.EMAIL_PASSWORD }} != '' && ${{ secrets.TARGET_EMAIL }} != ''
         run: |
           # 创建打包目录
           mkdir -p ./comic_pack
@@ -49,7 +45,7 @@ jobs:
           ls -lh ./comic_pack/
       # 步骤7：发送邮件（附带所有分卷文件）
       - name: 发送超大附件邮件
-        if: env.EMAIL_USERNAME == '' || env.EMAIL_PASSWORD == '' || env.TARGET_EMAIL == ''
+        if: ${{ secrets.EMAIL_USERNAME }} != '' && ${{ secrets.EMAIL_PASSWORD }} != '' && ${{ secrets.TARGET_EMAIL }} != ''
         uses: dawidd6/action-send-mail@v3
         with:
           # QQ邮箱SMTP配置（固定）
