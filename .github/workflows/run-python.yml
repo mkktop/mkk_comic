@@ -44,10 +44,8 @@ jobs:
           ls -lh ./comic_pack/
       # 步骤7：发送邮件（附带所有分卷文件）
       - name: 发送超大附件邮件
-        if: ${{ secrets.EMAIL_USERNAME }}
         uses: dawidd6/action-send-mail@v3
         with:
-          # QQ邮箱SMTP配置（固定）
           server_address: smtp.163.com
           server_port: 587
           username: ${{ secrets.EMAIL_USERNAME }} # 发件人邮箱
