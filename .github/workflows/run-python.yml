@@ -2,6 +2,8 @@ name: 运行Python脚本  # 自定义工作流名称
 on:
   push:  # 触发条件：代码推送时运行
     branches: [master]  # 目标分支（可修改）
+  schedule:
+    - cron: '0 18 * * *'  # 北京时间每天凌晨2点运行（UTC+8 → 18+8=2）
   workflow_dispatch:  # 允许手动触发（方便测试）
 jobs:
   run-script:
@@ -32,6 +34,7 @@ jobs:
           if-no-files-found: warn  # 无文件时仅警告不失败
       # 分卷打包
       - name: 分卷打包漫画文件
+        if: ${{ secrets.EMAIL_USERNAME != '' && secrets.EMAIL_PASSWORD != '' && secrets.TARGET_EMAIL != '' }}
         run: |
           # 创建打包目录
           mkdir -p ./comic_pack
@@ -42,6 +45,7 @@ jobs:
           ls -lh ./comic_pack/
       # 步骤7：发送邮件（附带所有分卷文件）
       - name: 发送超大附件邮件
+        if: ${{ secrets.EMAIL_USERNAME != '' && secrets.EMAIL_PASSWORD != '' && secrets.TARGET_EMAIL != '' }}
         uses: dawidd6/action-send-mail@v3
         with:
           # QQ邮箱SMTP配置（固定）
@@ -50,11 +54,11 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }} # 发件人邮箱
           password: ${{ secrets.EMAIL_PASSWORD }} #
           # 邮件内容
-          subject: 【漫画更新】${{ github.run_date }} - 共${{ steps.size.outputs.count }}卷
+          subject: 【漫画更新】${{ steps.size.outputs.run_date }}
           body: |
             📥 本次漫画下载任务已完成！
-            ├─ 运行时间：${{ github.run_date }}
-            ├─ 打包分卷：${{ steps.size.outputs.count }} 卷（每卷2.8GB）
+            ├─ 运行时间：${{ steps.size.outputs.run_date }}
+            ├─ 打包分卷：每卷2.8GB
             ├─ 保存路径：./out/
             ├─ 备用下载：${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
             └─ 有效期：15天
@@ -63,6 +67,8 @@ jobs:
             1. 将所有分卷文件放在同一目录
             2. 执行命令：unzip comic_latest.zip（自动合并分卷）
             3. 若解压失败，尝试：zip -F comic_latest.zip --out comic_merged.zip && unzip comic_merged.zip
+            
+            📥项目地址:https://github.com/mkktop/mkk_comic
           # 收件人（可填多个，用逗号分隔）
           to: ${{ secrets.TARGET_EMAIL }}
           # 发件人显示名称
