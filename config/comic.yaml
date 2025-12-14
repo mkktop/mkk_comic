@@ -4,9 +4,9 @@ global:
 comics:
 - name: 海贼王
   path: haizeiwang
-  last_chapter: 372
-  last_check_time: '2025-12-12 14:26:10'
+  last_chapter: 373
+  last_check_time: '2025-12-14 05:14:45'
 - name: 电锯人
   path: dianjuren
-  last_chapter: 245
-  last_check_time: '2025-12-12 14:26:15'
+  last_chapter: 248
+  last_check_time: '2025-12-14 05:15:08'
