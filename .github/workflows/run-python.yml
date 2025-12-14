@@ -3,7 +3,7 @@ on:
   push:  # 触发条件：代码推送时运行
     branches: [master]  # 目标分支（可修改）
   schedule:
-    - cron: '0 18 * * *'  # 北京时间每天凌晨2点运行（UTC+8 → 18+8=2）
+    - cron: '30 1 * * *'  # 北京时间每天上午9点30分运行（UTC+8 → 1+8=9:30）
   workflow_dispatch:  # 允许手动触发
 jobs:
   run-script:
@@ -55,16 +55,6 @@ jobs:
           # 同时保存实际大小
           echo "size=$file_size" >> $GITHUB_OUTPUT
           echo "size_mb=$(($file_size/1024/1024))" >> $GITHUB_OUTPUT
-      - name: 上传文件到 file.io
-        id: upload
-        run: |
-            # 使用 curl 直接调用 file.io API 上传文件
-            RESPONSE=$(curl -s -F "file=@./comic_pack/comic_latest.zip" "https://file.io")
-            # 从 JSON 响应中提取下载链接 (link字段)
-            DOWNLOAD_URL=$(echo $RESPONSE | grep -o '"link":"[^"]*"' | cut -d'"' -f4)
-            echo "文件下载链接: $DOWNLOAD_URL"
-            echo "download_url=$DOWNLOAD_URL" >> $GITHUB_OUTPUT
-
       - name: 漫画下载成功通知(45MB以内发送附件)
         uses: dawidd6/action-send-mail@v3
         if: steps.pack.outputs.should_send == 'true'  # 只有在should_send为true时才发送
@@ -74,15 +64,13 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject:
-            【漫画更新】
+            【每日漫画推送】
           body: |
             📥 本次漫画下载任务已完成！
             ├─ 运行时间：${{ steps.size.outputs.run_date }}
             ├─ 打包大小：${{ steps.pack.outputs.size_mb }} MB
-            ├─ 保存路径：./out/
-            ├─ 一次性下载链接：${{ steps.upload.outputs.download_url }}
             ├─ 备用下载：${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            └─ 有效期：15天
+            └─ 有效期：90天
 
             📌 解压说明：
             1. 将所有分卷文件放在同一目录
@@ -91,7 +79,7 @@ jobs:
 
             📥项目地址:https://github.com/mkktop/mkk_comic
           to: ${{ secrets.TARGET_EMAIL }}
-          from: mkk_comic 自动同步
+          from: mkk_comic mkk_comic订阅推送
           attachments: ./comic_pack/comic_latest.zip
           secure: true
 
@@ -103,20 +91,18 @@ jobs:
           server_port: 587
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: 【漫画更新】
+          subject: 【每日漫画推送】
           body: |
             📭 本次漫画下载任务已完成，附件过大请手动下载。
             ├─ 运行时间：${{ steps.size.outputs.run_date }}
             ├─ 打包大小：${{ steps.pack.outputs.size_mb }} MB
-            ├─ 保存路径：./out/
-            ├─ 一次性下载链接：${{ steps.upload.outputs.download_url }}
             ├─ 备用下载：${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            └─ 有效期：15天
+            └─ 有效期：90天
 
             📥 项目地址：https://github.com/mkktop/mkk_comic
             如需手动检查，请访问项目仓库查看详细日志。
           to: ${{ secrets.TARGET_EMAIL }}
-          from: mkk_comic 自动同步
+          from: mkk_comic订阅推送
           secure: true
       - name: 提交配置到Git
         run: |

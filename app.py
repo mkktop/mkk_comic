@@ -543,7 +543,7 @@ def print_main_menu():
     print("   2. 查看漫画详情")
     print("   3. 下载漫画")
     print("   4. PDF设置")
-    print("   5. 使用说明")
+    print("   5. 自动更新")
     print("   6. 退出程序")
     while True:
         select = input("请输入需要的功能 (1-6): ")
@@ -661,12 +661,8 @@ def pdf_set_function():
     return pdf_switch
 
 def instructions_function():
-    print(f"   5. 说明书")
-    print(f"   如果需要下载漫画，需要先进行搜索，获取漫画对应的地址")
-    print(f"   下载漫画前需要获取一下章节")
-    print(f"   程序默认不转换PDF，如有需要请打开开关")
-    input("回车继续...")
-
+    print(f"   5. 自动更新")
+    check_and_download_comics()
 def select_function(function_unm):
     print_title_style()
     if function_unm == 1:
@@ -737,6 +733,7 @@ def check_and_download_comics():
         comic_path = comic["path"]
         comic_last_chapter = comic["last_chapter"]
         comic_last_check_time = comic["last_check_time"]
+        download_limit = comic["download_limit"]
         print(f"\n【{comic_name}】上次下载至第{comic_last_chapter}章")
         total = get_latest_chapter(comic_path)
         if total<= comic_last_chapter:
@@ -744,7 +741,10 @@ def check_and_download_comics():
             comics[idx]["last_check_time"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             save_config(config)
             continue
-        print(f"【{comic_name}】检测到更新！最新：{total}章（需下载{comic_last_chapter + 1}~{total}章）")
+        print(f"【{comic_name}】检测到更新！最新：{total}章")
+        if comic_last_chapter + download_limit < total:
+            total = comic_last_chapter + download_limit
+        print(f"【{comic_name}】最大下载限制为{download_limit}章-需下载{comic_last_chapter + 1}~{total}章）")
         for chapter in range(comic_last_chapter + 1, total + 1):
             if download_comic_image(chapter, chapter,comic_path):
                 comics[idx]["last_chapter"] = chapter
