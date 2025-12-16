@@ -69,7 +69,7 @@ jobs:
             📥 本次漫画下载任务已完成！
             ├─ 运行时间：${{ steps.size.outputs.run_date }}
             ├─ 打包大小：${{ steps.pack.outputs.size_mb }} MB
-            ├─ 备用下载：${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            ├─ 下载地址：${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
             └─ 有效期：90天
 
             📌 解压说明：
@@ -79,7 +79,7 @@ jobs:
 
             📥项目地址:https://github.com/mkktop/mkk_comic
           to: ${{ secrets.TARGET_EMAIL }}
-          from: mkk_comic mkk_comic订阅推送
+          from: mkk_comic订阅推送
           attachments: ./comic_pack/comic_latest.zip
           secure: true
 
@@ -96,7 +96,7 @@ jobs:
             📭 本次漫画下载任务已完成，附件过大请手动下载。
             ├─ 运行时间：${{ steps.size.outputs.run_date }}
             ├─ 打包大小：${{ steps.pack.outputs.size_mb }} MB
-            ├─ 备用下载：${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            ├─ 下载地址：${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
             └─ 有效期：90天
 
             📥 项目地址：https://github.com/mkktop/mkk_comic
