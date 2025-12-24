@@ -6,7 +6,6 @@ from PIL import Image
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 import yaml
-import datetime
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
@@ -840,7 +839,7 @@ def check_and_download_comics():
         total = get_latest_chapter(comic_path)
         if total<= comic_last_chapter:
             logger.info(f"该漫画更新至{total}章，不需要更新")
-            comics[idx]["last_check_time"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            comics[idx]["last_check_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             save_config(config)
             continue
         logger.info(f"【{comic_name}】检测到更新！最新：{total}章")
@@ -854,7 +853,7 @@ def check_and_download_comics():
             else:
                 logger.info(f"【{comic_name}】第{chapter}章下载失败，终止后续章节下载")
                 break
-        comics[idx]["last_check_time"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        comics[idx]["last_check_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         save_config(config)
     logger.info(f"===== 检查更新完成 =====\n")
 

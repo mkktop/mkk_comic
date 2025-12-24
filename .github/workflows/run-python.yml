@@ -109,6 +109,7 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add ./config/*
+          git add ./logs/*
           git commit -m "Add config or log $(date +'%Y-%m-%d_%H-%M-%S')" || echo "无新日志需提交"
           git push origin master
         env:
