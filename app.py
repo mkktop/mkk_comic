@@ -628,7 +628,7 @@ def download_comic_image(start, end, path):
         page = int((start-1 )/ 50 + 1)
         results = get_chapters(path, page)
         res = handle_chapters_results(results,start,end,path)
-        if page*50 > end:
+        if page*50 >= end:
             break
         start += 50
     return res
