@@ -4,11 +4,11 @@ global:
 comics:
 - name: 海贼王
   path: haizeiwang
-  last_chapter: 74
+  last_chapter: 79
   download_limit: 5
-  last_check_time: '2026-02-24 04:01:52'
+  last_check_time: '2026-02-25 04:03:52'
 - name: 电锯人
   path: dianjuren
-  last_chapter: 74
+  last_chapter: 79
   download_limit: 5
-  last_check_time: '2026-02-24 04:02:00'
+  last_check_time: '2026-02-25 04:04:04'
