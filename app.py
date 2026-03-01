@@ -517,6 +517,11 @@ def handle_chapters_results(results,start_num,end_num,path):
                     make_pdf(output_dir,len(contents))
                 else:
                     make_pdf(output_dir,len(contents),pdf_password)
+            # 添加5-10秒随机延时
+            import random
+            delay = random.uniform(5, 10)
+            logger.info(f"章节下载完成，等待 {delay:.1f} 秒后继续...")
+            time.sleep(delay)
             return 1
 
 def download_images_multithreaded(contents, words, output_dir, headers, max_workers=5):
