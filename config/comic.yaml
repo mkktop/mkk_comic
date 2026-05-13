@@ -4,26 +4,26 @@ global:
 comics:
 - name: 海贼王
   path: haizeiwang
-  last_chapter: 386
+  last_chapter: 387
   download_limit: 10
-  last_check_time: '2026-05-06 04:57:20'
+  last_check_time: '2026-05-13 05:27:36'
 - name: 电锯人
   path: dianjuren
   last_chapter: 258
   download_limit: 15
-  last_check_time: '2026-05-06 04:57:20'
+  last_check_time: '2026-05-13 05:27:37'
 - name: 魔都精兵的奴隸
   path: modujingbingdenuli
   last_chapter: 203
   download_limit: 60
-  last_check_time: '2026-05-06 04:57:28'
+  last_check_time: '2026-05-13 05:27:37'
 - name: 我獨自升級
   path: woduzishenji
   last_chapter: 201
   download_limit: 60
-  last_check_time: '2026-05-06 04:57:29'
+  last_check_time: '2026-05-13 05:27:38'
 - name: 迷宮干
   path: xsjzmwls
   last_chapter: 149
   download_limit: 60
-  last_check_time: '2026-05-06 04:57:30'
+  last_check_time: '2026-05-13 05:27:39'
